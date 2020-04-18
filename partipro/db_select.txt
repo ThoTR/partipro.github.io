@@ -1,0 +1,56 @@
+//Danh sach event ma personnes co pid=1 dang ki
+SELECT pers.nom, pers.prenom, event.intitule FROM evenements AS event 
+INNER JOIN inscriptions AS ins ON event.eid = ins.eid
+INNER JOIN personnes AS pers ON pers.pid = ins.pid WHERE pers.pid = 1;
+
+
+//Danh sach event ma personnes co pid=1 tham gia 
+SELECT pers.nom, pers.prenom, event.intitule FROM evenements AS event 
+INNER JOIN participations AS parti ON parti.eid = event.eid
+INNER JOIN personnes AS pers ON pers.pid = parti.pid WHERE pers.pid = 1;
+
+//left JOIN
+SELECT event.intitule FROM evenements AS event 
+INNER JOIN inscriptions AS ins ON event.eid = ins.eid 
+INNER JOIN personnes AS pers ON pers.pid = ins.pid
+LEFT JOIN participations AS parti ON parti.eid = ins.eid WHERE parti.pid = 4
+
+
+
+
+//Danh sach event ma perso co pid=4 tham gia ( co dang ki truoc)
+SELECT per.nom, e.intitule FROM person p
+INNER JOIN register r ON per.pid = r.pid 
+INNER JOIN event e ON r.eid = e.eid 
+INNER JOIN participation parti ON parti.pid = per.pid AND r.eid = parti.eid WHERE per.pid=4
+
+//Danh sach event mà thằng person có pid = 4 khong dang ky 
+SELECT * FROM evenements WHERE evenements.eid 
+NOT IN (SELECT evenements.eid FROM evenements JOIN inscriptions 
+                ON evenements.eid = inscriptions.eid AND inscriptions.pid=4)
+
+//Danh sach event ma thang pid=4 dang ky nhung khong tham gia
+--> eid
+SELECT inscriptions.eid FROM inscriptions WHERE inscriptions.pid = 4 AND inscriptions.eid NOT IN 
+(SELECT participations.eid FROM participations WHERE participations.pid=4)
+
+-->ten event tương ứng với eid
+SELECT evenements.intitule FROM evenements JOIN inscriptions 
+ON inscriptions.eid = evenements.eid WHERE inscriptions.pid = 4 AND inscriptions.eid NOT IN 
+(SELECT participations.eid FROM participations WHERE participations.pid=4)
+
+(SELECT event.intitule FROM event JOIN register
+ON register.eid = event.eid WHERE register.pid = 4 AND register.eid NOT IN 
+(SELECT participation.eid FROM participation WHERE participation.pid=4)
+
+//Ten personnes dang ky nhung khong tham gia su kien eid = 1
+--> pid
+SELECT inscriptions.pid FROM inscriptions WHERE inscriptions.eid=1 AND inscriptions.pid NOT IN 
+(SELECT participations.pid FROM participations WHERE participations.eid=1)
+
+-->ten tương ứng với pid
+SELECT personnes.nom, personnes.prenom FROM personnes JOIN inscriptions 
+                                                        ON personnes.pid = inscriptions.pid 
+WHERE inscriptions.eid=1 AND inscriptions.pid 
+        NOT IN (SELECT participations.pid FROM participations WHERE participations.eid=1)
+=>output: Pires Simon (pid=4)
