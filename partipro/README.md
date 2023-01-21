@@ -1,6 +1,7 @@
 # partipro.github.io
 
-# Un projet de programmation web 
+# Mini programmation web project
+Beautiful log-in page + retrieving data from MySQL using PHP
 
-Langage utilisé: **HTML**, **CSS**, **PHP**, **JavaScript**(JQuery), **MySQL**
+Language: **HTML**, **CSS**, **PHP**, **JavaScript**(JQuery), **MySQL** with my edited MVC framworks
 
